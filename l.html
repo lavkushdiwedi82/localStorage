@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Storage - Multiple Users</title>
+</head>
+<body>
+    <h2 id="title">Local Storage - Multiple Users</h2>
+
+    <button id="addUser">Add User</button>
+    <div id="userList"></div>
+
+    <script type="text/javascript">
+        // Function to get the user list from local storage
+        function getUserList() {
+            const userList = JSON.parse(localStorage.getItem("userList")) || [];
+            return userList;
+        }
+
+        // Function to display the user list
+        function displayUserList() {
+            const userList = getUserList();
+            const userListDiv = document.getElementById("userList");
+
+            userListDiv.innerHTML = "<h3>User List:</h3>";
+
+            if (userList.length === 0) {
+                userListDiv.innerHTML += "No users found.";
+            } else {
+                userList.forEach((user, index) => {
+                    userListDiv.innerHTML += `<p>User ${index + 1}: Name - ${user.name}, Age - ${user.age}</p>`;
+                });
+            }
+        }
+
+        // Function to add a user to the list and update local storage
+        function addUser() {
+            const name = prompt("Enter user's name:");
+            const age = prompt("Enter user's age:");
+
+            const user = { name, age };
+            const userList = getUserList();
+
+            userList.push(user);
+            localStorage.setItem("userList", JSON.stringify(userList));
+
+            displayUserList();
+        }
+
+        // Attach event listeners
+        const addUserButton = document.getElementById("addUser");
+        addUserButton.addEventListener("click", addUser);
+
+        // Display the initial user list
+        displayUserList();
+    </script>
+</body>
+</html>
